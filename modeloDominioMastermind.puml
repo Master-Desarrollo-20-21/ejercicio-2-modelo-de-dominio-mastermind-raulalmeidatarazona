@@ -1,0 +1,58 @@
+# Mastermind Domain Model
+
+@startuml
+Mastermind *-down-> Board
+Mastermind *-down-> "2" Player
+Mastermind *-down-> Turn
+
+Player <|-- CodeMaker
+Player <|-- CodeBreaker
+
+CodeMaker *-down-> SecretCode
+CodeBreaker *-down-> CodeProposal
+
+Turn -down-> CodeMaker
+Turn -down-> "0.. 15" CodeBreaker
+
+Board *-down-> Code
+Board *-down-> Result
+
+Code <|-down- SecretCode
+Code <|-down- CodeProposal
+Code -down-> "5" Token
+SecretCode -down-> WinnerCodeBreaker
+
+Token *--> Colour
+Token --> Position
+
+Colour <|-down- Red
+Colour <|-down- Blue
+Colour <|-down- Green
+Colour <|-down- Yellow
+Colour <|-down- Pink
+Colour <|-down- Brown
+
+CodeProposal --> Result
+
+Result *-down-> "0.. 5" Match
+Result <|-down- WinnerCodeBreaker
+WinnerCodeBreaker -down-> "5" BlackMatch
+CodeBreaker -down-> WinnerCodeBreaker
+
+Result <|-down- WinnerCodeMaker
+CodeMaker -down-> WinnerCodeMaker
+WinnerCodeMaker -down-> "0.. 5" WhiteMatch
+
+Match <|-- WhiteMatch
+Match <|-- BlackMatch
+Match -down-> Colour
+BlackMatch -down-> Position
+
+Action <|-down- PutCodeSecret
+PutCodeSecret -down-> CodeMaker
+PutCodeSecret -down-> SecretCode
+
+Action <|-down- MakeCodeProposal
+MakeCodeProposal -down-> CodeBreaker
+MakeCodeProposal -down-> CodeProposal
+@enduml
